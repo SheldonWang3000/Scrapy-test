@@ -9,8 +9,5 @@ import scrapy
 
 
 class TutorialItem(scrapy.Item):
-    title = scrapy.Field()
     url = scrapy.Field()
-    number = scrapy.Field()
-    content = scrapy.Field()
-
+    html = scrapy.Field()

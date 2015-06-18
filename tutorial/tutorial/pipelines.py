@@ -6,11 +6,13 @@
 # See: http://doc.scrapy.org/en/latest/topics/item-pipeline.html
 
 from scrapy import signals
+import os
 from scrapy.contrib.exporter import JsonLinesItemExporter, XmlItemExporter
 
 
 class XmlWritePipeline(object):
     def __init__(self):
+        self.num = 0
         pass
 
     @classmethod
@@ -21,18 +23,29 @@ class XmlWritePipeline(object):
         return pipeline
 
     def spider_opened(self, spider):
-        self.file = open('D:/' + spider.name + '.txt', 'wb')
-        self.expoter = JsonLinesItemExporter(self.file, ensure_ascii=False)
-        # self.expoter = XmlItemExporter(self.file)
-        self.expoter.start_exporting()
+        print 'open'
+        # self.file = open(spider.name + '.txt', 'wb')
+        # self.expoter = JsonLinesItemExporter(self.file, ensure_ascii=False)
+        # # self.expoter = XmlItemExporter(self.file)
+        # self.expoter.start_exporting()
 
     def spider_closed(self, spider):
-        self.expoter.finish_exporting()
-        self.file.close()
+        print 'close'
+        # self.expoter.finish_exporting()
+        # self.file.close()
 
         # process the crawled data, define and call dataProcess function
         # dataProcess('bbsData.xml', 'text.txt')
 
     def process_item(self, item, spider):
-        self.expoter.export_item(item)
+        # self.expoter.export_item(item)
+        # print os.getcwd()
+        # raw_input("Press Enter to continue...")
+        # f = open(os.getcwd() + '/' + item['url'][0] + '.txt', 'wb')
+        path = 'page/' + str(self.num) + '.txt'
+        self.num += 1
+        f = open(path, 'wb')
+        f.write(item['html'][0])
+        f.close()
+        # raw_input('wait')
         return item
